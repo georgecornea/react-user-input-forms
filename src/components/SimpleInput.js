@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 const SimpleInput = (props) => {
   const [input, setInput] = useState('');
-  const [isInputValid, setIsInputValid] = useState(true);
+  const [isInputValid, setIsInputValid] = useState(false);
+  const [isInputEdited, setIsInputEdited] = useState(false);
   // const inputRef = useRef();
 
   const inputOnChangeHandler = (e) => {
@@ -11,11 +12,12 @@ const SimpleInput = (props) => {
 
   const inputOnFocusHandler = () => {
     setInput('');
-    setIsInputValid(true);
+    setIsInputEdited(false);
   };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    setIsInputEdited(true);
 
     // if input is empty, we just return
     if (input.trim().length === 0) {
@@ -28,7 +30,10 @@ const SimpleInput = (props) => {
     console.log(input);
   };
 
-  const inputClassCss = isInputValid ? 'form-control' : 'form-control invalid';
+  const isNameInputInvalid = !isInputValid && isInputEdited;
+  const inputClassCss = isNameInputInvalid
+    ? 'form-control invalid'
+    : 'form-control';
 
   return (
     <form onSubmit={onSubmitHandler}>
@@ -42,7 +47,7 @@ const SimpleInput = (props) => {
           // ref={inputRef}
           onFocus={inputOnFocusHandler}
         />
-        {!isInputValid && <p className='error-text'>Invalid Input!</p>}
+        {isNameInputInvalid && <p className='error-text'>Invalid Input!</p>}
       </div>
       <div className='form-actions'>
         <button>Submit</button>
