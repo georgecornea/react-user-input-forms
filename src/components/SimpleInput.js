@@ -2,9 +2,11 @@ import { useState } from 'react';
 
 const SimpleInput = (props) => {
   const [input, setInput] = useState('');
-  const [isInputValid, setIsInputValid] = useState(false);
   const [isInputEdited, setIsInputEdited] = useState(false);
   // const inputRef = useRef();
+
+  const isInputValid = input.trim() !== '';
+  const isNameInputInvalid = !isInputValid && isInputEdited;
 
   const inputOnChangeHandler = (e) => {
     setInput(e.target.value);
@@ -17,12 +19,6 @@ const SimpleInput = (props) => {
 
   const inputOnBlurHandle = () => {
     setIsInputEdited(true);
-
-    if (input.trim().length === 0) {
-      setIsInputValid(false);
-      return;
-    }
-    setIsInputValid(true);
   };
 
   const onSubmitHandler = (e) => {
@@ -30,17 +26,13 @@ const SimpleInput = (props) => {
     setIsInputEdited(true);
 
     // if input is empty, we just return
-    if (input.trim().length === 0) {
-      setIsInputValid(false);
+    if (!isInputValid) {
       return;
     }
-
-    setIsInputValid(true);
 
     console.log(input);
   };
 
-  const isNameInputInvalid = !isInputValid && isInputEdited;
   const inputClassCss = isNameInputInvalid
     ? 'form-control invalid'
     : 'form-control';
