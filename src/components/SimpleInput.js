@@ -2,7 +2,8 @@ import { useRef, useState } from 'react';
 
 const SimpleInput = (props) => {
   const [input, setInput] = useState('');
-  const inputRef = useRef();
+  const [isInputValid, setIsInputValid] = useState(true);
+  // const inputRef = useRef();
 
   const inputOnChangeHandler = (e) => {
     setInput(e.target.value);
@@ -10,27 +11,38 @@ const SimpleInput = (props) => {
 
   const inputOnFocusHandler = () => {
     setInput('');
+    setIsInputValid(true);
   };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
-    //console.log(input);
-    console.log(inputRef.current.value);
+    // if input is empty, we just return
+    if (input.trim().length === 0) {
+      setIsInputValid(false);
+      return;
+    }
+
+    setIsInputValid(true);
+
+    console.log(input);
   };
+
+  const inputClassCss = isInputValid ? 'form-control' : 'form-control invalid';
 
   return (
     <form onSubmit={onSubmitHandler}>
-      <div className='form-control'>
+      <div className={inputClassCss}>
         <label htmlFor='name'>Your Name</label>
         <input
           type='text'
           id='name'
           value={input}
           onChange={inputOnChangeHandler}
-          ref={inputRef}
+          // ref={inputRef}
           onFocus={inputOnFocusHandler}
         />
+        {!isInputValid && <p className='error-text'>Invalid Input!</p>}
       </div>
       <div className='form-actions'>
         <button>Submit</button>
