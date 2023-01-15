@@ -15,6 +15,16 @@ const SimpleInput = (props) => {
     setIsInputEdited(false);
   };
 
+  const inputOnBlurHandle = () => {
+    setIsInputEdited(true);
+
+    if (input.trim().length === 0) {
+      setIsInputValid(false);
+      return;
+    }
+    setIsInputValid(true);
+  };
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
     setIsInputEdited(true);
@@ -44,6 +54,7 @@ const SimpleInput = (props) => {
           id='name'
           value={input}
           onChange={inputOnChangeHandler}
+          onBlur={inputOnBlurHandle}
           // ref={inputRef}
           onFocus={inputOnFocusHandler}
         />
