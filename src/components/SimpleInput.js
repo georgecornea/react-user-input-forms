@@ -3,10 +3,17 @@ import { useState } from 'react';
 const SimpleInput = (props) => {
   const [input, setInput] = useState('');
   const [isInputEdited, setIsInputEdited] = useState(false);
+  // const [isFormValid, setIsFormValid] = useState(false);
   // const inputRef = useRef();
 
   const isInputValid = input.trim() !== '';
   const isNameInputInvalid = !isInputValid && isInputEdited;
+  let isFormValid = false;
+
+  // we can combine other inputs
+  if (isInputValid) {
+    isFormValid = true;
+  }
 
   const inputOnChangeHandler = (e) => {
     setInput(e.target.value);
@@ -53,7 +60,7 @@ const SimpleInput = (props) => {
         {isNameInputInvalid && <p className='error-text'>Invalid Input!</p>}
       </div>
       <div className='form-actions'>
-        <button>Submit</button>
+        <button disabled={!isFormValid}>Submit</button>
       </div>
     </form>
   );
