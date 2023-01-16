@@ -6,14 +6,28 @@ const SimpleInput = (props) => {
   // const [isFormValid, setIsFormValid] = useState(false);
   // const inputRef = useRef();
 
+  const [enteredEmail, setEnteredEmail] = useState('');
+  const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
+
+  const enteredEmailIsValid = enteredEmail.includes('@');
+  const enteredEmailIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
+
   const isInputValid = input.trim() !== '';
   const isNameInputInvalid = !isInputValid && isInputEdited;
   let isFormValid = false;
 
   // we can combine other inputs
-  if (isInputValid) {
+  if (isInputValid && enteredEmailIsValid) {
     isFormValid = true;
   }
+
+  const enteredEmailChangeHandler = (e) => {
+    setEnteredEmail(e.target.value);
+  };
+
+  const enteredEmailBlurHandler = (e) => {
+    setEnteredEmailTouched(true);
+  };
 
   const inputOnChangeHandler = (e) => {
     setInput(e.target.value);
@@ -37,10 +51,17 @@ const SimpleInput = (props) => {
       return;
     }
 
+    setEnteredEmail('');
+    setEnteredEmailTouched(false);
+
     console.log(input);
   };
 
   const inputClassCss = isNameInputInvalid
+    ? 'form-control invalid'
+    : 'form-control';
+
+  const emailClassesCss = enteredEmailIsInvalid
     ? 'form-control invalid'
     : 'form-control';
 
@@ -58,6 +79,19 @@ const SimpleInput = (props) => {
           onFocus={inputOnFocusHandler}
         />
         {isNameInputInvalid && <p className='error-text'>Invalid Input!</p>}
+      </div>
+      <div className={emailClassesCss}>
+        <label htmlFor='email'>Email Address</label>
+        <input
+          type='email'
+          id='email'
+          value={enteredEmail}
+          onChange={enteredEmailChangeHandler}
+          onBlur={enteredEmailBlurHandler}
+          // ref={inputRef}
+          // onFocus={inputOnFocusHandler}
+        />
+        {enteredEmailIsInvalid && <p className='error-text'>Invalid email!</p>}
       </div>
       <div className='form-actions'>
         <button disabled={!isFormValid}>Submit</button>
