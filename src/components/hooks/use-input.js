@@ -15,11 +15,17 @@ const useInput = (validateInput) => {
     setIsInputEdited(true);
   };
 
+  const resetInput = (e) => {
+    setInput('');
+    setIsInputEdited(false);
+  };
+
   return {
     input,
     error,
     inputChangeHandler,
     inputBlurHandler,
+    resetInput,
   };
 };
 
